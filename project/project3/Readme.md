@@ -16,7 +16,7 @@
 
 ## 3. 电路实现（Poseidon2HashCheck.circom）：
 
-下面是基于论文《[Poseidon2: A New Hash Function for Zero Knowledge Proof Systems](https://eprint.iacr.org/2023/323.pdf)》中 Table 1 给出的参数，针对 $n = 256$，$t = 3$，$d = 5$ 的 Poseidon2 哈希函数的 Circom 实现。
+下面是基于论文《[Poseidon2: A New Hash Function for Zero Knowledge Proof Systems](https://eprint.iacr.org/2023/323.pdf)》中 Table 1 给出的参数，针对 $(n=256, t=3, d=5)$  的 Poseidon2 哈希函数的 Circom 实现。
 
 ---
 
