@@ -46,9 +46,9 @@ component main = Poseidon2HashCheck(3);
 ### 1. 关键参数（来自论文 Table 1）：
 
 * 安全参数：128-bit
-* 字段位宽：$n = 256$
-* 状态宽度：$t = 3$
-* S-box 幂次：$\alpha = 5$
+* 字段位宽：$(n = 256)$
+* 状态宽度：$(t = 3)$
+* S-box 幂次：$(\alpha = 5)$
 * 轮数总数：Full Rounds = 8（每边 4 次）+ Partial Rounds = 22
 * 总轮数：30
 * MDS 矩阵 + round constants：使用论文中推荐方式生成
