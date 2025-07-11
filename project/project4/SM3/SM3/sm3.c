@@ -1,6 +1,8 @@
-#include <stdio.h>
 #include <stdint.h>
 #include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 #define ROTL(x,n) (((x) << (n)) | ((x) >> (32 - (n))))
 
@@ -145,12 +147,42 @@ void print_hex(const uint8_t* data, size_t len) {
     printf("\n");
 }
 
+void benchmark_sm3(int repeat) {
+    const size_t MSG_SIZE = 1024 * 1024; // 1MB
+    uint8_t * msg = (uint8_t *) malloc(MSG_SIZE);
+    memset(msg, 'A', MSG_SIZE); // 模拟输入
+
+    uint8_t hash[32];
+    clock_t start = clock();
+
+    for (int i = 0; i < repeat; i++) {
+        sm3(msg, MSG_SIZE, hash);
+    }
+
+    clock_t end = clock();
+    double seconds = (double)(end - start) / CLOCKS_PER_SEC;
+
+    printf("Benchmark SM3_pro: %d x 1MB = %.2f MB total\n", repeat, (double)repeat);
+    printf("Time taken: %.4f seconds\n", seconds);
+    printf("Throughput: %.2f MB/s\n", repeat / seconds);
+
+    free(msg);
+}
 
 int main() {
+    printf("测试 SM3(\"abc\")...\n");
     const char* msg = "abc";
-    uint8_t digest[32];
-    sm3((const uint8_t*)msg, strlen(msg), digest);
-    printf("SM3(\"abc\") = ");
-    print_hex(digest, 32);
+    uint8_t hash[32];
+
+    sm3((const uint8_t*)msg, strlen(msg), hash);
+
+    print_hex(hash, 32);
+
+    printf("Expected= 66c7f0f462eeedd9d1f2d46bdc10e4e24167c4875cf2f7a2297da02b8f4ba8e0\n");
+
+    printf("\n=== SM3 性能测试 ===\n");
+    benchmark_sm3(100);  // 对 1MB 数据重复 100 次
+
     return 0;
 }
+
