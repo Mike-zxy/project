@@ -1,28 +1,17 @@
- **Project6.实现DDH-based Private Intersection-Sum Protocol**
+# Project6.实现DDH-based Private Intersection-Sum Protocol
 
 
-
-实验要求：
+## 实验要求：
 
 1. 使用满足 DDH 假设的群 G\mathbb{G}，如椭圆曲线群或素数阶有限域上的群。
 2. 使用加性同态加密（如 Paillier）来支持密文求和。
 3. 实现多轮协议模拟两方 P1P_1 和 P2P_2 的交互过程。
 
-------
-
-> 
 
 这个协议是一个基于 DDH 假设的**私密交集求和协议**，它的目标是：
-
-------
-
-### ✅ 协议目标：
-
 在不泄露集合内容的前提下，**两个参与方（P1 和 P2）计算它们集合交集对应值的加和总和**。
 
 ------
-
-### ✅ 双方输入和输出：
 
 - **P1（Party 1）输入：**
 
@@ -40,7 +29,7 @@
 
 ------
 
-### ✅ 协议流程简述（三轮交互）：
+### 协议流程简述（三轮交互）：
 
 1. **Round 1（P1 → P2）**:
    - P1 随机选择密钥 k1k_1
@@ -59,8 +48,6 @@
 
 ------
 
-### ✅ 结果说明：
-
 该协议完成了：
 
 - **P1 不知道交集内容和 t 值**
@@ -69,15 +56,7 @@
 
 ------
 
-### 📌 实际应用场景：
-
-- 两个公司要统计共同客户的消费总额，但都不想泄露各自客户名单
-- 医疗隐私数据分析：两家医院想知道共同病人的总治疗费用
-- 广告投放交叉分析：品牌和平台分析目标用户交叉消费总额
-
-------
-
-如你想我进一步将这个协议与 PSI（Private Set Intersection）或 PSI-Sum（交集求和）类协议进行比较，我也可以详细解释。是否还需要我将流程转成文字版说明或图解？
+## 代码实现
 
 ###  第一步：安装依赖
 
@@ -160,13 +139,12 @@ class Party2:
 
 ------
 
-### 示例运行：
+### 运行：
+输入
+<img width="1136" height="89" alt="image" src="https://github.com/user-attachments/assets/57745eae-a833-45a7-ab73-82c465e09f9c" />
+
 
 ```python
-# 示例输入
-P1_set = ['alice', 'bob', 'charlie']
-P2_set = [('bob', 10), ('charlie', 20), ('david', 30)]
-
 # 实例化参与方
 p1 = Party1(P1_set)
 p2 = Party2(P2_set)
@@ -187,19 +165,6 @@ print(f"Intersection sum: {intersection_sum}")
 
 ------
 
-### ✅ 输出示例：
-
-```
-Intersection sum: 30
-```
-
-说明：这里 `P1 ∩ P2 = {bob, charlie}`，对应 `10 + 20 = 30`。
-
-------
-
-如果你需要：
-
-- 使用真实 ECC 库模拟整个群；
-- 更换为素数域群；
-- 模拟真实网络通信；
-- 实现 security proof 模拟器（SIM1、SIM2）；
+###  输出：
+<img width="1220" height="179" alt="image" src="https://github.com/user-attachments/assets/b3c723da-3bd1-4c3f-ad4e-af3c6027cbf6" />
+说明这几个集合的交为30，而事实也确实如此。
