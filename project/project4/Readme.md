@@ -137,3 +137,40 @@ V[i] = V[i-1] ^ compression(V[i-1], B_i)
 
 可见sm3的优化版本在时间和吞吐率上提升接近30%。
 ---
+下面是对两个任务的简要说明和建议实现方向：
+
+---
+
+## 2.基于 SM3 的实现，验证 Length-Extension Attack：
+
+SM3 属于 Merkle-Damgård 构造，其设计允许攻击者在不知道消息原文的前提下，仅凭哈希值和消息长度，对哈希值进行扩展攻击（length extension）。这要求我们具备对 SM3 内部状态（IV）设置的能力，并重用压缩函数。
+
+
+1. 修改 `sm3_init()` 支持自定义初始向量（中间状态）；
+2. 记录原始消息长度并进行 padding 模拟；
+3. 构造追加消息，重用压缩函数 `sm3_compress()` 计算伪造的哈希值；
+4. 与真实追加消息的哈希值进行对比，验证攻击有效。
+
+---
+
+## 3.基于 SM3 的实现，构建 RFC6962 Merkle 树：
+
+目标功能：
+
+* 构建包含 10 万叶子节点的 Merkle 树；
+* 使用 SM3 哈希；
+* 提供存在性证明（Merkle Proof）和不存在性证明（Consistence Proof）。
+
+
+1. 按 RFC6962 定义的树结构构造 Merkle Tree（右边界二叉树）；
+2. 每个叶子节点格式为：`LeafHash = SM3(0x00 || data)`；
+3. 父节点哈希格式为：`NodeHash = SM3(0x01 || left || right)`；
+4. 存储树结构并实现：
+
+   * `get_proof(index)`：返回某个叶子到根的路径；
+   * `verify_proof(leaf, proof, root)`：验证存在性；
+   * `prove_absence(x)`：若元素不存在，构造一致性证明（可使用临近兄弟节点）。
+
+---
+
+
